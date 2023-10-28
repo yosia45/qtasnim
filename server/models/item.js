@@ -18,7 +18,9 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: { msg: "Item name already registered" },
+        unique: {
+          msg: "Item name already registered, please use another item name",
+        },
         validate: {
           notNull: { msg: "Item name is required" },
           notEmpty: { msg: "Item name is required" },
@@ -28,8 +30,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-          notNull: { msg: "Type ID is required" },
-          notEmpty: { msg: "Type ID is required" },
+          notNull: { msg: "Type is required" },
+          notEmpty: { msg: "Type is required" },
         },
       },
     },

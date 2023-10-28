@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 export default function SideBar() {
   return (
     <div>
@@ -8,20 +10,22 @@ export default function SideBar() {
         <div className="position-sticky pt-3">
           <ul className="nav flex-column">
             <li className="nav-item">
-              <a className="nav-link" href="" id="nav-dashboard">
-                {" "}
+              <NavLink to={"/"} className="nav-link" id="nav-dashboard">
                 <span className="icon material-symbols-outlined me-2">
-                  Products
+                  Items
                 </span>
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="" id="nav-product">
-                {" "}
+              <NavLink
+                to={"/types"}
+                className="nav-link"
+                id="nav-product"
+              >
                 <span className="icon material-symbols-outlined me-2">
                   Types
                 </span>
-              </a>
+              </NavLink>
             </li>
           </ul>
         </div>

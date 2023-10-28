@@ -1,7 +1,11 @@
+import EditType from "../components/EditType";
+import SideBar from "../components/SideBar"
+
 export default function EditTypePage(){
     return (
         <div>
-            <p>Edit Type Page</p>
+            <SideBar />
+            <EditType />
         </div>
     )
 }

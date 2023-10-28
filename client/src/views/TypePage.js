@@ -1,14 +1,13 @@
-import AddNewType from "../components/AddNewType";
 import SideBar from "../components/SideBar";
-import NavBar from "../components/NavBar";
+import TypeTable from "../components/TypeTable";
 
-export default function AddNewTypePage() {
+export default function TypePage() {
   return (
     <div>
       <section className="container-fluid" id="home-section">
         <div className="row">
           <SideBar />
-          <AddNewType />
+          <TypeTable />
         </div>
       </section>
     </div>

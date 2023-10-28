@@ -5,7 +5,7 @@ import { useNavigate, NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export default function AddNewType() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [newType, setNewType] = useState({
     name: "",
@@ -15,7 +15,7 @@ export default function AddNewType() {
     const name = e.target.name;
     setNewType({ ...newType, [name]: value });
   };
-  let bodyToAdd = JSON.stringify({...newType})
+  let bodyToAdd = JSON.stringify({ ...newType });
   const addNewTypeHandler = () => {
     dispatch(addType(bodyToAdd))
       .then((data) => {
@@ -26,7 +26,7 @@ export default function AddNewType() {
         Swal.fire(`${err}`, "", "error");
       })
       .finally(() => {
-        // navigate(`/types`);
+        navigate(`/types`);
         dispatch(fetchTypes());
       });
   };
@@ -48,7 +48,7 @@ export default function AddNewType() {
             }}
           >
             <div className="mb-3">
-              <label for="category-name">
+              <label htmlFor="category-name">
                 Name <span className="text-danger fw-bold">*</span>
               </label>
               <input
@@ -64,15 +64,13 @@ export default function AddNewType() {
             </div>
             <div className="row mt-5 mb-3">
               <div className="col-6">
-                <a
+                <NavLink
+                  to={"/types"}
                   className="btn btn-lg btn-light rounded-pill w-100 p-2"
-                  href=""
                   id="cancel-new-category"
                 >
-                  {/* <NavLink to="/types"> */}
                   Cancel
-                  {/* </NavLink> */}
-                </a>
+                </NavLink>
               </div>
               <div className="col-6">
                 <button
@@ -80,9 +78,7 @@ export default function AddNewType() {
                   type="submit"
                   id="btn-submit-new-category"
                 >
-                  {/* <NavLink to="/types"> */}
-                    Submit
-                  {/* </NavLink> */}
+                  Submit
                 </button>
               </div>
             </div>

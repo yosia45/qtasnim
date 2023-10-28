@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Detail.belongsTo(models.Item, {foreignKey:"itemId"})
+      Detail.belongsTo(models.Item, { foreignKey: "itemId" });
     }
   }
   Detail.init(
@@ -22,22 +22,48 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "Transaction date is required" },
         },
       },
-      stock: {
+      initialStock: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-          min: { args: [0], msg: "Minimum stock is 0" },
-          notEmpty: { msg: "Stock value is required" },
-          notEmpty: { msg: "Stock value is required" },
+          notEmpty: { msg: "Initial stock is required" },
+          notNull: { msg: "Initial stock is required" },
+          min: { args: [0], msg: "Minimum initial stock value is 0" },
         },
       },
-      totalSoldItem: {
+      stockAddition: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-          min: { args: [0], msg: "Minimum total sold item value is 0" },
-          notEmpty: { msg: " Total sold item is required" },
-          notNull: { msg: "Total sold item is required" },
+          notEmpty: { msg: "Stock addition is required" },
+          notNull: { msg: "Stock addition is required" },
+          min: { args: [0], msg: "Minimum Stock addition value is 0" },
+        },
+      },
+      stockBuying: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Stock Buying is required" },
+          notNull: { msg: "Stock Buying is required" },
+          min: { args: [0], msg: "Minimum Stock Buying value is 0" },
+        },
+      },
+      currentStock: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Current stock is required" },
+          notNull: { msg: "Current stock is required" },
+          min: { args: [0], msg: "Minimum Current stock value is 0" },
+        },
+      },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Status is required" },
+          notNull: { msg: "Status is required" },
         },
       },
       itemId: {

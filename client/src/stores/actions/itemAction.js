@@ -44,7 +44,9 @@ export const deleteItemAction = (payload) => {
 
 export const fetchItems = () => {
   return (dispatch) => {
-    return fetch(`${BASE_URL}/items`)
+    return fetch(`${BASE_URL}/items`, {
+      method: "GET",
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not OK");
@@ -59,7 +61,12 @@ export const fetchItems = () => {
 
 export const fetchItemById = (id) => {
   return (dispatch) => {
-    return fetch(`${BASE_URL}/items/${id}`)
+    return fetch(`${BASE_URL}/items/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not OK");
@@ -67,7 +74,7 @@ export const fetchItemById = (id) => {
         return response.json();
       })
       .then((data) => {
-        dispatch(fetchItemById(data));
+        dispatch(fetchItemByIdAction(data));
       });
   };
 };
@@ -76,12 +83,12 @@ export const addItem = (bodyToAdd) => {
   return (dispatch) => {
     return fetch(`${BASE_URL}/items`, {
       method: "POST",
-      headers:{
-        "Content-Type":"application/json"
+      headers: {
+        "Content-Type": "application/json",
       },
       body: bodyToAdd,
     })
-      .then((response) => {W
+      .then((response) => {
         if (!response.ok) {
           return response.json().then((err) => {
             throw new Error(err.message);
@@ -100,8 +107,8 @@ export const editItem = (bodyToEdit, id) => {
   return (dispatch) => {
     return fetch(`${BASE_URL}/items/${id}`, {
       method: "PUT",
-      headers:{
-        "Content-Type":"application/json"
+      headers: {
+        "Content-Type": "application/json",
       },
       body: bodyToEdit,
     })

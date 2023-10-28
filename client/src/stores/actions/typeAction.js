@@ -1,5 +1,6 @@
 import {
   FETCH_TYPE,
+  FETCH_TYPE_BY_ID,
   ADD_TYPE,
   EDIT_TYPE,
   DELETE_TYPE,
@@ -16,6 +17,13 @@ export const fetchTypesAction = (payload) => {
 export const addTypesAction = (payload) => {
   return {
     type: ADD_TYPE,
+    payload,
+  };
+};
+
+export const fetchTypeByIdAction = (payload) => {
+  return {
+    type: FETCH_TYPE_BY_ID,
     payload,
   };
 };
@@ -51,17 +59,34 @@ export const fetchTypes = () => {
   };
 };
 
+export const fetchTypeById = (id) => {
+  return (dispatch) => {
+    return fetch(`${BASE_URL}/types/${id}`, {
+      method: "GET",
+    })
+      .then((response) => {
+        if (!response) {
+          throw new Error("Network response was not OK");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        dispatch(fetchTypeByIdAction(data));
+      });
+  };
+};
+
 export const addType = (bodyToAdd) => {
   return (dispatch) => {
     return fetch(`${BASE_URL}/types`, {
       method: "POST",
       headers: {
-        "Content-Type" : "application/json"
+        "Content-Type": "application/json",
       },
       body: bodyToAdd,
     })
       .then((response) => {
-        console.log(response)
+        console.log(response);
         if (!response.ok) {
           throw new Error("Network response was not OK");
         }
@@ -78,6 +103,9 @@ export const editType = (bodyToEdit, id) => {
   return (dispatch) => {
     return fetch(`${BASE_URL}/types/${id}`, {
       method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: bodyToEdit,
     })
       .then((response) => {

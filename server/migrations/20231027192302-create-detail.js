@@ -12,11 +12,20 @@ module.exports = {
       transactionDate: {
         type: Sequelize.DATE,
       },
-      stock: {
+      initialStock: {
         type: Sequelize.INTEGER,
       },
-      totalSoldItem: {
+      stockAddition: {
         type: Sequelize.INTEGER,
+      },
+      stockBuying: {
+        type: Sequelize.INTEGER,
+      },
+      currentStock: {
+        type: Sequelize.INTEGER,
+      },
+      status: {
+        type: Sequelize.STRING,
       },
       itemId: {
         type: Sequelize.INTEGER,

@@ -16,8 +16,8 @@ export default function EditItem() {
   const [loadingPage, setLoadingPage] = useState(false);
   const { id } = useParams();
   const dispatch = useDispatch();
+  const { itemById } = useSelector((state) => state.item);
   const { types } = useSelector((state) => state.type);
-  const { itemById } = useSelector((state) => console.log(state));
   const [newItem, setNewItem] = useState({
     name: "",
     typeId: "",
@@ -27,10 +27,17 @@ export default function EditItem() {
     const name = e.target.name;
     setNewItem({ ...newItem, [name]: value });
   };
-  console.log(itemById(2))
+  console.log(itemById)
   useEffect(() => {
-    dispatch(fetchItemById(id));
-  });
+    dispatch(fetchTypes())
+    dispatch(fetchItemById(id))
+    .catch((err) => {
+        Swal.fire(`${err}`, "", "error");
+      })
+      .finally(() => {
+        setLoadingPage(false);
+      });
+  }, []);
   useEffect(() => {
     setNewItem(itemById);
   }, [itemById]);
@@ -44,7 +51,7 @@ export default function EditItem() {
         Swal.fire(`${err}`, "", "error");
       })
       .finally(() => {
-        nagivate("/items");
+        nagivate("/");
         dispatch(fetchItems());
       });
   };
@@ -66,11 +73,11 @@ export default function EditItem() {
                 id="category-form"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  editItemHandler(itemById.id);
+                  editItemHandler(newItem.id);
                 }}
               >
                 <div className="mb-3">
-                  <label for="category-name">
+                  <label htmlFor="category-name">
                     Name <span className="text-danger fw-bold">*</span>
                   </label>
                   <input
@@ -83,10 +90,15 @@ export default function EditItem() {
                     value={newItem.name}
                     onChange={changeEditItem}
                   />
-                  <label for="category-name">
+                  <label htmlFor="category-name">
                     Item Type <span className="text-danger fw-bold">*</span>
                   </label>
-                  <select onChange={changeEditItem} name="typeId" required>
+                  <select
+                    onChange={changeEditItem}
+                    name="typeId"
+                    defaultValue={newItem.typeId}
+                    required
+                  >
                     <option value="" disabled selected>
                       Type
                     </option>
@@ -99,13 +111,13 @@ export default function EditItem() {
                 </div>
                 <div className="row mt-5 mb-3">
                   <div className="col-6">
-                    <a
+                    <NavLink
+                      to={"/"}
                       className="btn btn-lg btn-light rounded-pill w-100 p-2"
-                      href=""
                       id="cancel-new-category"
                     >
                       Cancel
-                    </a>
+                    </NavLink>
                   </div>
                   <div className="col-6">
                     <button

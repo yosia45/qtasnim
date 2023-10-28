@@ -9,6 +9,15 @@ class TypeController {
       next(err);
     }
   }
+  static async getTypeById(req,res,next){
+    try {
+      const {id} = req.params
+      let  typeById = await Type.findByPk(id)
+      res.status(200).json(typeById)
+    } catch (err) {
+      next(err)
+    }
+  }
   static async addType(req, res, next) {
     try {
       const { name } = req.body;
