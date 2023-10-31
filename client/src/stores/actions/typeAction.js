@@ -46,9 +46,14 @@ export const fetchTypes = () => {
   return (dispatch) => {
     return fetch(`${BASE_URL}/types`, {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
+      },
     })
       .then((response) => {
         if (!response.ok) {
+          console.log(response)
           throw new Error("Network response was not OK");
         }
         return response.json();
@@ -63,6 +68,10 @@ export const fetchTypeById = (id) => {
   return (dispatch) => {
     return fetch(`${BASE_URL}/types/${id}`, {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
+      },
     })
       .then((response) => {
         if (!response) {
@@ -82,6 +91,7 @@ export const addType = (bodyToAdd) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
       },
       body: bodyToAdd,
     })
@@ -105,6 +115,7 @@ export const editType = (bodyToEdit, id) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
       },
       body: bodyToEdit,
     })
@@ -125,6 +136,10 @@ export const deleteType = (id) => {
   return (dispatch) => {
     return fetch(`${BASE_URL}/types/${id}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
+      },
     })
       .then((response) => {
         if (!response.ok) {

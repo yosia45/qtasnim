@@ -40,12 +40,12 @@ export default function EditType() {
     dispatch(editType(JSON.stringify(newType), id))
       .then((data) => {
         Swal.fire(`${data}`, "", "success");
+        navigate("/types");
       })
       .catch((err) => {
         Swal.fire(`${err}`, "", "error");
       })
       .finally(() => {
-        navigate("/types");
         dispatch(fetchTypes());
       });
   };

@@ -1,12 +1,19 @@
-const { Item, Type, Detail } = require("../models/index");
+const { Item, Type, Detail, User } = require("../models/index");
 
 class ItemController {
   static async getItem(req, res, next) {
     try {
       let item = await Item.findAll({
-        include: {
-          model: Type,
-        },
+        include: [
+          {
+            model: Type,
+          },
+          {
+            model: User,
+            attributes: ["id", "username", "role"],
+          },
+        ],
+        order: [["id", "ASC"]],
       });
       res.status(200).json(item);
     } catch (err) {
@@ -34,8 +41,13 @@ class ItemController {
   }
   static async addItem(req, res, next) {
     try {
-      const { name, typeId } = req.body;
-      let postItem = await Item.create({ name, typeId });
+      const { name, typeId, userId } = req.body;
+      let postItem = await Item.create({
+        name,
+        status: "active",
+        typeId,
+        userId,
+      });
       res.status(201).json(`Success adding new item`);
     } catch (err) {
       next(err);
@@ -64,6 +76,23 @@ class ItemController {
       );
       res.status(200).json(`Success editing item to ${name}`);
     } catch (err) {
+      next(err);
+    }
+  }
+  static async editItemStatus(req, res, next) {
+    try {
+      const { id } = req.params;
+      let { status } = req.body;
+      console.log(status)
+      let changeItemStatus = await Item.update(
+        {
+          status: status,
+        },
+        { where: { id: id } }
+      );
+      res.status(200).json(`Success editing item status to ${status}`);
+    } catch (err) {
+      console.log(err)
       next(err);
     }
   }

@@ -27,7 +27,6 @@ export default function EditItem() {
     const name = e.target.name;
     setNewItem({ ...newItem, [name]: value });
   };
-  console.log(itemById)
   useEffect(() => {
     dispatch(fetchTypes())
     dispatch(fetchItemById(id))
@@ -46,12 +45,12 @@ export default function EditItem() {
     dispatch(editItem(bodyToEdit, id))
       .then((data) => {
         Swal.fire(`${data}`, "", "success");
+        nagivate("/");
       })
       .catch((err) => {
         Swal.fire(`${err}`, "", "error");
       })
       .finally(() => {
-        nagivate("/");
         dispatch(fetchItems());
       });
   };

@@ -20,13 +20,13 @@ export default function AddNewType() {
     dispatch(addType(bodyToAdd))
       .then((data) => {
         Swal.fire(`${data}`, "", "success");
+        navigate(`/types`);
       })
       .catch((err) => {
         // console.log(err)
         Swal.fire(`${err}`, "", "error");
       })
       .finally(() => {
-        navigate(`/types`);
         dispatch(fetchTypes());
       });
   };

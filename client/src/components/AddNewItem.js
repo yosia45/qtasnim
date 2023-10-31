@@ -13,6 +13,7 @@ export default function AddNewItem() {
   const [newItem, setNewItem] = useState({
     name: "",
     typeId: "",
+    userId: localStorage.getItem("id")
   });
   const [loadingPage, setLoadingPage] = useState(true);
   useEffect(() => {
@@ -31,17 +32,17 @@ export default function AddNewItem() {
     const name = e.target.name;
     setNewItem({ ...newItem, [name]: value });
   };
-  let bodyToAdd = JSON.stringify({ ...newItem, typeId: +newItem.typeId });
+  let bodyToAdd = JSON.stringify({ ...newItem, typeId: +newItem.typeId, userId: +newItem.userId });
   const addNewItem = () => {
     dispatch(addItem(bodyToAdd))
       .then((data) => {
         Swal.fire(`${data}`, "", "success");
+        navigate("/");
       })
       .catch((err) => {
         Swal.fire(`${err}`, "", "error");
       })
       .finally(() => {
-        navigate("/");
         dispatch(fetchItems());
       });
   };

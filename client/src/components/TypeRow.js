@@ -11,16 +11,22 @@ export default function TypeRow({ type, idx }) {
     setNewType(type);
   }, []);
   const deleteTypeHandler = (id) => {
-    dispatch(deleteType(id))
-      .then((data) => {
-        Swal.fire(`${data}`, "", "success");
-      })
-      .catch((err) => {
-        Swal.fire(`${err}`, "", "error");
-      })
-      .finally(() => {
-        dispatch(fetchTypes());
-      });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "$d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted", "The type has been deleted", "success");
+        dispatch(deleteType(id)).finally(() => {
+          dispatch(fetchTypes());
+        });
+      }
+    });
   };
   return (
     <>
@@ -28,24 +34,31 @@ export default function TypeRow({ type, idx }) {
         <td scope="row">{idx + 1}</td>
         <td className="fw-bold">{type.name}</td>
         <td>
-          <NavLink to={`/edittype/${type.id}`}>
-            <button className="btn btn-primary">
-              <span className="icon material-symbols-outlined text-light">
-                Edit
-              </span>
-            </button>
-          </NavLink>
-          <button
-            className="btn btn-danger"
-            onClick={(e) => {
-              e.preventDefault();
-              deleteTypeHandler(type.id);
-            }}
-          >
-            <span className="icon material-symbols-outlined text-light">
-              Delete
-            </span>
-          </button>
+          {localStorage.getItem("role") === "Admin" ? (
+            <>
+              <NavLink to={`/edittype/${type.id}`}>
+                <button
+                  className="btn btn-primary"
+                  style={{ marginRight: '10px' }}
+                >
+                  <span className="icon material-symbols-outlined text-light">
+                    Edit
+                  </span>
+                </button>
+              </NavLink>
+              <button
+                className="btn btn-danger"
+                onClick={(e) => {
+                  e.preventDefault();
+                  deleteTypeHandler(type.id);
+                }}
+              >
+                <span className="icon material-symbols-outlined text-light">
+                  Delete
+                </span>
+              </button>
+            </>
+          ) : null}
         </td>
       </tr>
     </>

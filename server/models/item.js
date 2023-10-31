@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Item.belongsTo(models.User, { foreignKey: "userId" });
       Item.belongsTo(models.Type, { foreignKey: "typeId" });
       Item.hasMany(models.Detail, { foreignKey: "itemId" });
     }
@@ -26,12 +27,28 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "Item name is required" },
         },
       },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Item status is required" },
+          notEmpty: { msg: "Item status is required" },
+        },
+      },
       typeId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
           notNull: { msg: "Type is required" },
           notEmpty: { msg: "Type is required" },
+        },
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "User Id is required" },
+          notEmpty: { msg: "User Id is required" },
         },
       },
     },

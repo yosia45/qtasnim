@@ -1,6 +1,5 @@
 import AddNewType from "../components/AddNewType";
 import SideBar from "../components/SideBar";
-import NavBar from "../components/NavBar";
 
 export default function AddNewTypePage() {
   return (

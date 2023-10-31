@@ -30,6 +30,10 @@ export const fetchDetails = () => {
   return (dispatch) => {
     return fetch(`${BASE_URL}/details`, {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
+      },
     })
       .then((response) => {
         if (!response.ok) {
@@ -49,6 +53,7 @@ export const addStockAddition = (bodyToAdd) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
       },
       body: bodyToAdd,
     })
@@ -68,11 +73,12 @@ export const addStockAddition = (bodyToAdd) => {
 
 export const addBuyStock = (bodyToAdd) => {
   return (dispatch) => {
-    console.log(bodyToAdd)
+    console.log(bodyToAdd);
     return fetch(`${BASE_URL}/details/buystock`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
       },
       body: bodyToAdd,
     })

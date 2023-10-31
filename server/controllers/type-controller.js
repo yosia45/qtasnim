@@ -3,19 +3,21 @@ const { Type } = require("../models/index");
 class TypeController {
   static async getType(req, res, next) {
     try {
-      let type = await Type.findAll();
+      let type = await Type.findAll({
+        order: [["id", "ASC"]],
+      });
       res.status(200).json(type);
     } catch (err) {
       next(err);
     }
   }
-  static async getTypeById(req,res,next){
+  static async getTypeById(req, res, next) {
     try {
-      const {id} = req.params
-      let  typeById = await Type.findByPk(id)
-      res.status(200).json(typeById)
+      const { id } = req.params;
+      let typeById = await Type.findByPk(id);
+      res.status(200).json(typeById);
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
   static async addType(req, res, next) {
@@ -24,7 +26,7 @@ class TypeController {
       let postType = await Type.create({ name });
       res.status(201).json(`Success adding new type:${name}!`);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       next(err);
     }
   }
@@ -51,7 +53,7 @@ class TypeController {
         },
         { where: { id: id } }
       );
-      res.status(200).json(`Success to edit type to ${name}`)
+      res.status(200).json(`Success to edit type to ${name}`);
     } catch (err) {
       next(err);
     }

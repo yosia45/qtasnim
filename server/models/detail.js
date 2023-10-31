@@ -37,16 +37,16 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: { msg: "Stock addition is required" },
           notNull: { msg: "Stock addition is required" },
-          min: { args: [0], msg: "Minimum Stock addition value is 0" },
+          min: { args: [0], msg: "Minimum stock addition value is 0" },
         },
       },
       stockBuying: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-          notEmpty: { msg: "Stock Buying is required" },
-          notNull: { msg: "Stock Buying is required" },
-          min: { args: [0], msg: "Minimum Stock Buying value is 0" },
+          notEmpty: { msg: "Stock buying is required" },
+          notNull: { msg: "Stock buying is required" },
+          min: { args: [0], msg: "Minimum stock buying value is 0" },
         },
       },
       currentStock: {
@@ -55,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: { msg: "Current stock is required" },
           notNull: { msg: "Current stock is required" },
-          min: { args: [0], msg: "Minimum Current stock value is 0" },
+          min: { args: [0], msg: "Minimum current stock value is 0" },
         },
       },
       status: {

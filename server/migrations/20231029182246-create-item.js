@@ -12,10 +12,22 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
+      status: {
+        type: Sequelize.STRING,
+      },
       typeId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Types",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
           key: "id",
         },
         onDelete: "CASCADE",

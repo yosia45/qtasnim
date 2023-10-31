@@ -4,6 +4,7 @@ import {
   FETCH_ITEM_BY_ID,
   ADD_ITEM,
   EDIT_ITEM,
+  EDIT_ITEM_STATUS,
   DELETE_ITEM,
 } from "./actionType";
 
@@ -35,6 +36,13 @@ export const editItemAction = (payload) => {
   };
 };
 
+export const editItemStatusAction = (payload) => {
+  return {
+    type: EDIT_ITEM_STATUS,
+    payload,
+  };
+};
+
 export const deleteItemAction = (payload) => {
   return {
     type: DELETE_ITEM,
@@ -46,6 +54,10 @@ export const fetchItems = () => {
   return (dispatch) => {
     return fetch(`${BASE_URL}/items`, {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
+      },
     })
       .then((response) => {
         if (!response.ok) {
@@ -65,6 +77,7 @@ export const fetchItemById = (id) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
       },
     })
       .then((response) => {
@@ -85,6 +98,7 @@ export const addItem = (bodyToAdd) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
       },
       body: bodyToAdd,
     })
@@ -109,6 +123,7 @@ export const editItem = (bodyToEdit, id) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
       },
       body: bodyToEdit,
     })
@@ -127,10 +142,39 @@ export const editItem = (bodyToEdit, id) => {
   };
 };
 
+export const editItemStatus = (bodyToEdit, id) => {
+  return (dispatch) => {
+    return fetch(`${BASE_URL}/items/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
+      },
+      body: bodyToEdit,
+    })
+    .then((response) => {
+      if (!response.ok) {
+          return response.json().then((err) => {
+            throw new Error(err.message);
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        dispatch(editItemStatusAction(bodyToEdit));
+        return data;
+      });
+  };
+};
+
 export const deleteItem = (id) => {
   return (dispatch) => {
     return fetch(`${BASE_URL}/items/${id}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: localStorage.getItem("access_token"),
+      },
     })
       .then((response) => {
         if (!response.ok) {

@@ -54,15 +54,25 @@ export default function DetailTable1() {
           <Input
             placeholder="Start Date"
             type="date"
-            value={selectedKeys[0]}
-            onChange={(e) => setSelectedKeys([e.target.value, selectedKeys[1]])}
+            value={selectedKeys[0]?.date ?? undefined}
+            onChange={(e) =>
+              setSelectedKeys([
+                { date: e.target.value, type: "start" },
+                selectedKeys[1],
+              ])
+            }
             style={{ marginBottom: 8, display: "block" }}
           />
           <Input
             placeholder="End Date"
             type="date"
-            value={selectedKeys[1]}
-            onChange={(e) => setSelectedKeys([selectedKeys[0], e.target.value])}
+            value={selectedKeys[1]?.date ?? undefined}
+            onChange={(e) =>
+              setSelectedKeys([
+                selectedKeys[0],
+                { date: e.target.value, type: "end" },
+              ])
+            }
             style={{ marginBottom: 8, display: "block" }}
           />
           <Button
@@ -82,13 +92,20 @@ export default function DetailTable1() {
         </div>
       ),
       onFilter: (value, record) => {
-        const start = new Date(value[0]);
-        const end = new Date(value[1]);
-        const recordDate = new Date(record.transactionDate);
-        return recordDate >= start && recordDate <= end;
+        const start = new Date(value.date).setHours(0, 0, 0, 0);
+        const recordDate = new Date(record.transactionDate).setHours(
+          0,
+          0,
+          0,
+          0
+        );
+        if (value.type === "start") {
+          return recordDate >= start;
+        } else {
+          return record <= start;
+        }
       },
       render: (text) => {
-        // Convert ISO 8601 date format to DD/MM/YYYY
         const date = new Date(text);
         return date.toLocaleDateString("en-GB");
       },
@@ -124,21 +141,35 @@ export default function DetailTable1() {
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 className="display-2">Item Details</h1>
           <div className="d-flex">
-          <NavLink to={`/addstock/${id}`}>
-            <button className="btn btn-primary rounded-pill" id="new-product">
-              <span className="icon material-symbols-outlined">Add Stock</span>
-            </button>
-          </NavLink>
-          <NavLink to={`/addbuying/${id}`}>
-            <button className="btn btn-warning rounded-pill" id="new-product">
-              <span className="icon material-symbols-outlined">Buy Item</span>
-            </button>
-          </NavLink>
+            {(+localStorage.getItem("id") === itemById.userId &&
+              localStorage.getItem("role") === "Client") ||
+            localStorage.getItem("role") === "Admin" ? (
+              <NavLink to={`/addstock/${id}`}>
+                <button
+                  className="btn btn-primary rounded-pill"
+                  id="new-product"
+                  style={{marginRight:'10px'}}
+                >
+                  <span className="icon material-symbols-outlined">
+                    Add Stock
+                  </span>
+                </button>
+              </NavLink>
+            ) : null}
+            <NavLink to={`/addbuying/${id}`}>
+              <button className="btn btn-warning rounded-pill" id="new-product">
+                <span className="icon material-symbols-outlined">Buy Item</span>
+              </button>
+            </NavLink>
           </div>
         </div>
         <div className="row">
           <div className="col-12 table-responsive"></div>
-          <Table columns={columns} dataSource={data} onChange={onChange} />
+          {loadingPage ? (
+            <PulseLoader color="#ffffff" size={10} />
+          ) : (
+            <Table columns={columns} dataSource={data} onChange={onChange} />
+          )}
         </div>
       </section>
     </div>

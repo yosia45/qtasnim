@@ -23,13 +23,13 @@ export default function AddStockBuying() {
   const addNewStockBuying = () => {
     dispatch(addBuyStock(bodyToAdd))
       .then((data) => {
-        Swal.fire(`${data}`, "", "success");
+        Swal.fire(`Success to buy this item`, "", "success");
+        navigate(`/items/${id}`);
       })
       .catch((err) => {
         Swal.fire(`${err}`, "", "error");
       })
       .finally(() => {
-        navigate(`/items/${id}`);
         dispatch(fetchItemById(id));
       });
   };

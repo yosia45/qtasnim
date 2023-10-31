@@ -10,6 +10,12 @@ export default function ItemTable() {
   const dispatch = useDispatch();
   const { items } = useSelector((state) => state.item);
   const [loadingPage, setLoadingPage] = useState(true);
+  const [search, setSearch] = useState("");
+
+  const changeSearch = (e) => {
+    const { value } = e.target;
+    setSearch(value);
+  };
 
   useEffect(() => {
     dispatch(fetchItems())
@@ -28,12 +34,22 @@ export default function ItemTable() {
       >
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 className="display-2">Items</h1>
-          <NavLink to={"/additem"}>
-            <button className="btn btn-primary rounded-pill" id="new-product">
-              <span className="icon material-symbols-outlined"></span>Add New
-              Item
-            </button>
-          </NavLink>
+          <div className="d-flex flex-wrap align-items-center">
+            <NavLink to={"/additem"}>
+              <button className="btn btn-primary rounded-pill" id="new-product">
+                Add New Item
+              </button>
+            </NavLink>
+          </div>
+        </div>
+        <div className="search-input my-2">
+          <input
+            type="text"
+            name="name"
+            placeholder="Search by name"
+            className="input input-bordered text-lg"
+            onChange={changeSearch}
+          />
         </div>
         <div className="row">
           <div className="col-12 table-responsive">
@@ -46,13 +62,36 @@ export default function ItemTable() {
                     <th scope="col">No</th>
                     <th scope="col">Name</th>
                     <th scope="col">Type</th>
-                    <th scope="col" width="240px"></th>
+                    <th scope="col">Posted By</th>
+                    <th scope="col" width="400px"></th>
                   </tr>
                 </thead>
                 <tbody id="table-product">
-                  {items.map((item, idx) => (
-                    <ItemRows item={item} key={item.id} idx={idx} />
-                  ))}
+                  {items
+                    .filter((item) => {
+                      if (
+                        localStorage.getItem("role") === "Client" &&
+                        item.status === "active"
+                      ) {
+                        return true;
+                      } else if (localStorage.getItem("role") === "Admin") {
+                        return true;
+                      } else {
+                        return false;
+                      }
+                    })
+                    .filter((item) => {
+                      if (search === "") {
+                        return item;
+                      } else if (
+                        item.name.toLowerCase().includes(search.toLowerCase())
+                      ) {
+                        return item;
+                      }
+                    })
+                    .map((item, idx) => (
+                      <ItemRows item={item} key={item.id} idx={idx} />
+                    ))}
                 </tbody>
               </table>
             )}
