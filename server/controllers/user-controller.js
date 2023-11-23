@@ -1,6 +1,11 @@
 const { User } = require("../models/index");
 const { verifyHash } = require("../helpers/bcrypt");
 const { generateTokenFromPayload } = require("../helpers/jwt");
+const {
+  generateResetToken,
+  resetPassword,
+  sendResetPasswordEmail,
+} = require("../helpers/resetPassword");
 
 class UserController {
   static async register(req, res, next) {
@@ -46,9 +51,48 @@ class UserController {
           id: foundUser.id,
           email: foundUser.email,
           username: foundUser.username,
-          role: foundUser.role
+          role: foundUser.role,
+          resetToken: foundUser.resetToken
         },
       });
+    } catch (err) {
+      next(err);
+    }
+  }
+  static async forgotPassword(req, res, next) {
+    const { email } = req.body;
+
+    try {
+      const resetToken = await generateResetToken(email);
+      if (resetToken) {
+        const resetLink = `http://localhost:3001/reset-password/${resetToken}`;
+        await sendResetPasswordEmail(email, resetLink);
+        res.status(200).json({ message: "Password reset email sent" });
+      } else {
+        throw { name: "NotFound" };
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async resetPassword(req, res, next) {
+    const { token, newPassword } = req.body;
+    try {
+      const findUser = await User.findOne({ where: { resetToken: token } });
+      if (!findUser) {
+        throw { name: "InvalidExpiredToken" };
+      }
+      const resetResult = await resetPassword(findUser, newPassword, token);
+      if (resetResult) {
+        return res
+          .status(200)
+          .json({
+            message: "Password reset successful, you can login after this",
+          });
+      } else {
+        throw { name: "InvalidExpiredToken" };
+      }
     } catch (err) {
       next(err);
     }

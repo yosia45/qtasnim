@@ -1,8 +1,10 @@
-import { ADD_USERS, LOGIN_USERS } from "../actions/actionType";
+import { ADD_USERS, LOGIN_USERS, FORGOT_PASSWORD } from "../actions/actionType";
 
 const initialState = {
   users: [],
   isLogin: false,
+  resetToken: null,
+  forgotPasswordData: null,
 };
 
 function userReducer(state = initialState, action) {
@@ -11,6 +13,8 @@ function userReducer(state = initialState, action) {
       return { ...state, users: [...state.users, action.payload] };
     case LOGIN_USERS:
       return { ...state, isLogin: action.payload };
+    case FORGOT_PASSWORD:
+      return { ...state, forgotPasswordData: action.payload };
     default:
       return state;
   }

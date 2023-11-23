@@ -9,6 +9,8 @@ const detailRoute = require("./detail-route");
 
 router.post("/register", UserController.register);
 router.post("/login", UserController.login);
+router.post("/forgot-password", UserController.forgotPassword);
+router.post("/reset-password", UserController.resetPassword);
 router.use("/items", authn, itemRoute);
 router.use("/types", authn, typeRoute);
 router.use("/details", authn, detailRoute);

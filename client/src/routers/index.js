@@ -9,6 +9,7 @@ import EditItemPage from "../views/EditItemPage";
 import EditTypePage from "../views/EditTypePage";
 import AddStockPage from "../views/AddStockPage";
 import AddStockBuyingPage from "../views/AddStockBuyingPage";
+import ForgotPasswordPage from "../views/ForgotPasswordPage";
 
 const authn = () => {
   const access_token = localStorage.getItem("access_token");
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
     path: "/login",
     element: <LoginRegisterPage />,
   },
+  {
+    path:"/forgotpassword",
+    element:<ForgotPasswordPage />
+  }
 ]);
 
 export default router;

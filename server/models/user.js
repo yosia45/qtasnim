@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: {
-          msg: "Email already registerd, please use another email",
+          msg: "Email already registered, please use another email",
         },
         validate: {
           notNull: { msg: "Email is registered" },
@@ -57,6 +57,10 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "Role is required" },
           notEmpty: { msg: "Role is required" },
         },
+      },
+      resetToken: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
     },
     {

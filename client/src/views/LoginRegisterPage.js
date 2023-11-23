@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { loginUser, registerUser } from "../stores/actions/userAction";
 
@@ -208,7 +208,15 @@ export default function LoginPage() {
                     >
                       Log In
                     </button>
-                    <div id="buttonDiv"></div>
+                  <NavLink
+                      to={'/forgotpassword'}
+                      id="btn-login"
+                      className="btn btn-lg btn-light rounded-pill w-100 p-2"
+                      style={{marginTop: '10px'}}
+                      type="submit"
+                    >
+                      Forgot Password
+                    </NavLink>
                   </form>
                 </div>
               </div>
